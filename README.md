@@ -38,5 +38,4 @@ Test / testOptions += testDockerCleanup.value
 
 Thanks
 -----
-
 This work was based on the [sbt-dynamodb] (https://github.com/localytics/sbt-dynamodb) plugin by localytics.
