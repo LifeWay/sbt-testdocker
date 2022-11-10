@@ -1,0 +1,34 @@
+name: PullRequest Validation
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  format:
+    name: Scala Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v3
+      - name: Setup Scala
+      - uses: olafurpg/setup-scala@v13
+        with:
+          java-version: amazon-corretto@1.11
+      - name: Scala Caching
+        uses: coursier/cache-action@v5
+      - name: Scalafmt
+        run: sbt scalafmtCheckAll
+  test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v3
+      - name: Setup Scala
+      - uses: olafurpg/setup-scala@v13
+        with:
+          java-version: amazon-corretto@1.11
+      - name: Scala Caching
+        uses: coursier/cache-action@v5
+      - name: Build & Test
+        run: sbt test
