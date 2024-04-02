@@ -28,9 +28,6 @@ object StartTestDocker {
       } else {
         streamz.log.info("Starting testdocker image")
         Process(arg).run()
-        var attempts = 0
-        val r        = attempts = attempts + 1
-
         do {
           streamz.log.info(s"Waiting for testdocker to boot on port $hostPort")
           Thread.sleep(250)
