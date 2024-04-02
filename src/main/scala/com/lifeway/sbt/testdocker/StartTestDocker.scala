@@ -12,10 +12,11 @@ import scala.util.Try
 object StartTestDocker {
   private def isHostPortActive(port: Int): Boolean = Try(new Socket("localhost", port).close()).isSuccess
   def apply(
-      dockerConfigOpt: Option[DockerConfig],
+      dockerConfig: Seq[DockerConfig],
       streamz: TaskStreams
   ): Unit = {
-    dockerConfigOpt.fold(streamz.log.error("DOCKER WILL NOT BE STARTING. CONFIGURATION NOT PROVIDED")) { config =>
+    if (dockerConfig.length == 0) streamz.log.error("DOCKER WILL NOT BE STARTING. CONFIGURATION NOT PROVIDED")
+    dockerConfig.foreach { config =>
       val containerImage = config.image
       val containerPort  = config.containerPort
       val hostPort       = config.hostPort
@@ -27,10 +28,14 @@ object StartTestDocker {
       } else {
         streamz.log.info("Starting testdocker image")
         Process(arg).run()
+        var attempts = 0
+        val r        = attempts = attempts + 1
+
         do {
           streamz.log.info(s"Waiting for testdocker to boot on port $hostPort")
           Thread.sleep(250)
-        } while (!isHostPortActive(hostPort))
+          attempts = attempts + 1
+        } while (!isHostPortActive(hostPort) && attempts <= 240)
       }
     }
   }
