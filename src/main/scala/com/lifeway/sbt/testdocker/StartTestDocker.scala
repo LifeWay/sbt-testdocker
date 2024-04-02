@@ -34,8 +34,7 @@ object StartTestDocker {
         do {
           streamz.log.info(s"Waiting for testdocker to boot on port $hostPort")
           Thread.sleep(250)
-          attempts = attempts + 1
-        } while (!isHostPortActive(hostPort) && attempts <= 240)
+        } while (!isHostPortActive(hostPort))
       }
     }
   }
