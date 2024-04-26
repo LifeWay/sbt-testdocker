@@ -28,7 +28,7 @@ starting up dynamodb-local and binding it to port 8000 on the host. When the tes
 container will be shutdown.
 
 ```
-testDockerConfig := Some(DockerConfig("amazon/dynamodb-local", 8000, 8000)),
+testDockerConfig := Seq(DockerConfig("amazon/dynamodb-local", 8000, 8000)),
 testDockerStart  := testDockerStart.dependsOn(Test / compile).value,
 Test / test      := (Test / test).dependsOn(testDockerStart).value,
 Test / testOnly  := (Test / testOnly).dependsOn(testDockerStart).evaluated,

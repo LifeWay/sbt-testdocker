@@ -9,14 +9,14 @@ import scala.concurrent.duration._
 
 object TestDockerKeys {
   case class DockerConfig(image: String, containerPort: Int, hostPort: Int)
-  lazy val testDockerConfig = settingKey[Option[DockerConfig]]("Container image, container port, and host port to use.")
+  lazy val testDockerConfig = settingKey[Seq[DockerConfig]]("Container image, container port, and host port to use.")
 
   lazy val testDockerStart   = TaskKey[Unit]("start-test-docker")
   lazy val testDockerStop    = TaskKey[Unit]("stop-test-docker")
   lazy val testDockerCleanup = TaskKey[Tests.Cleanup]("test-docker-test-cleanup")
 
   lazy val baseTestDockerSettings = Seq(
-    testDockerConfig := None,
+    testDockerConfig := Nil,
     testDockerStart := StartTestDocker(
       testDockerConfig.value,
       streams.value
